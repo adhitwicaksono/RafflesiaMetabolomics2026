@@ -1,8 +1,9 @@
 # Python Scripts Visualizer for Host-Parasite Metabolomics Data of Rafflesia
 
 Every PNG in this package was verified byte-identical (MD5) against the image actually embedded
-in `Rafflesia_negLCMS_REVISED_trackchanges.docx`. If you want to regenerate a figure, or check a
-number in it, this is the source of truth — not any earlier version from mid-conversation.
+in `Rafflesia_negLCMS_REVISED_trackchanges.docx`. 
+
+## Updates from the developmental version
 
 | Folder | Manuscript figure | Script | What changed vs. original |
 |---|---|---|---|
