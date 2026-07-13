@@ -99,14 +99,14 @@ ax.legend(title="Supergroup", bbox_to_anchor=(1.02, 1), loc="upper left", frameo
 plt.tight_layout()
 
 # --- Export scores and loadings before opening the interactive plot window ---
-scores_out = "PCA_scores_supergroups_DEDUP.csv"
-loadings_out = "PCA_loadings_supergroups_DEDUP.csv"
+scores_out = "PCA_scores_supergroups.csv"
+loadings_out = "PCA_loadings_supergroups.csv"
 scores_df.to_csv(scores_out)
 pd.DataFrame(pca.components_.T, index=X.columns, columns=["PC1", "PC2", "PC3"]).to_csv(loadings_out)
 
 # --- Save figure files ---
-fig_out_png = "PCA_3D_supergroups_DEDUP.png"
-fig_out_svg = "PCA_3D_supergroups_DEDUP.svg"
+fig_out_png = "PCA_3D_supergroups.png"
+fig_out_svg = "PCA_3D_supergroups.svg"
 fig.savefig(fig_out_png, dpi=300, bbox_inches="tight")
 fig.savefig(fig_out_svg, bbox_inches="tight")
 
