@@ -120,8 +120,8 @@ else:
 plt.tight_layout()
 
 # --- 8) Export PCA scores & loadings ---
-scores_out = "PCA_scores_autoscaled_main-data_DEDUP.csv"
-loadings_out = "PCA_loadings_autoscaled_main-data_DEDUP.csv"
+scores_out = "PCA_scores_autoscaled_main-data.csv"
+loadings_out = "PCA_loadings_autoscaled_main-data.csv"
 
 scores_df = pd.DataFrame(scores, index=X.index, columns=["PC1", "PC2", "PC3"])
 scores_df["Group"] = groups
@@ -131,8 +131,8 @@ scores_df.to_csv(scores_out)
 loadings_df.to_csv(loadings_out)
 
 # --- 9) Save figure files ---
-figure_png = "PCA_3D_sample_groups_DEDUP.png"
-figure_svg = "PCA_3D_sample_groups_DEDUP.svg"
+figure_png = "PCA_3D_sample_groups.png"
+figure_svg = "PCA_3D_sample_groups.svg"
 
 fig.savefig(figure_png, dpi=300, bbox_inches="tight")
 fig.savefig(figure_svg, bbox_inches="tight")
