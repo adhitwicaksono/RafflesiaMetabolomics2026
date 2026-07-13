@@ -25,9 +25,9 @@ SIGNIFICANT_LOG2FC = 1.0
 P_VALUE_THRESHOLD = 0.05
 FDR_THRESHOLD = 0.10  # relaxed FDR cutoff, shown for transparency only
 
-OUTPUT_PNG = BASE_DIR / "infection_enriched_metabolite_scatter_FDR.png"
-OUTPUT_SVG = BASE_DIR / "infection_enriched_metabolite_scatter_FDR.svg"
-OUTPUT_CSV = BASE_DIR / "infection_enriched_significant_metabolites_FDR.csv"
+OUTPUT_PNG = BASE_DIR / "infection_enriched_metabolite_scatter.png"
+OUTPUT_SVG = BASE_DIR / "infection_enriched_metabolite_scatter.svg"
+OUTPUT_CSV = BASE_DIR / "infection_enriched_significant_metabolites.csv"
 
 CLASS_COLORS = {
     "Glycoside": "#1f77b4",
