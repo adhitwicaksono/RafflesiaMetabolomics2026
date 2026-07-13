@@ -4,7 +4,7 @@ This archive contains the Python scripts, input datasets, and figure outputs use
 
 **Untargeted metabolomics reveals host responses and metabolites linked to host compatibility in Rafflesiaceae parasitism**
 
-Every PNG figure in this package was checked against the corresponding figure embedded in `Rafflesia_negLCMS_REVISED_trackchanges.docx`.
+Every PNG figure in this package was checked against the corresponding figure embedded in the manuscript.
 
 ## Purpose of this package
 
@@ -29,6 +29,7 @@ The package allows readers to inspect the input datasets, rerun the figure-gener
 ├── figure5/
 ├── figure6/
 ├── figure7/
+├── LICENSE
 └── README.md
 ```
 
@@ -115,7 +116,7 @@ For Figure 5, locality-specific comparisons are shown for selected metabolites. 
 The Figure 7 heatmap is generated directly from `rafflesia_dataset5.xlsx`. The compound `Naringenin` is removed within the script because it could not be verified for the final heatmap. The script exports the final 33-row heatmap matrix as:
 
 ```text
-metabolite_heatmap_matrix_FINAL.csv
+metabolite_heatmap_matrix.csv
 ```
 
 ## Recommended citation
