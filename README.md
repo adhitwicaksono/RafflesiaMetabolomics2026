@@ -21,13 +21,13 @@ Each script expects its corresponding `rafflesia_datasetN.xlsx` in the same work
 Copy the relevant file from `raw_data/` alongside the script and run with `python3`.
 
 ## CSV/data outputs included alongside each figure
-- Figures 1–3: PCA scores CSV (PC1–3 coordinates + group labels per sample)
-- Figure 4: table of the 6 flagged metabolites with raw p and FDR q
-- Figure 5: table of the 9 displayed compounds with raw p and FDR q, plus
-  `recomputed_all_features_with_FDR.csv` — the full ~1,400-metabolite family used to compute the
-  FDR correction (for anyone who wants to audit the correction itself)
-- Figure 6: raw means and TSS-normalized values for the top-20 compounds per tissue group
-- Figure 7: the final 33-row Z-score matrix used to render the heatmap
+Figure 1 → rafflesia_dataset1.xlsx
+Figure 2 → rafflesia_dataset1.xlsx
+Figure 3 → rafflesia_dataset1.xlsx
+Figure 4 → rafflesia_dataset2.xlsx
+Figure 5 → rafflesia_dataset1.xlsx + rafflesia_dataset3.xlsx
+Figure 6 → rafflesia_dataset4.xlsx
+Figure 7 → metabolite_heatmap_matrix_FINAL.csv, plus possibly rafflesia_dataset5.xlsx as source context
 
 ## Project
 These Python scripts are generated for Rafflesia host-parasite metabolomics project lead by Dr. Jeanmaire Molina.
