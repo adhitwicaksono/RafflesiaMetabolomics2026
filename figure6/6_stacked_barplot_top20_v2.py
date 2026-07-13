@@ -96,22 +96,22 @@ plt.setp(
 
 # Save figure (PNG/SVG)
 fig.savefig(
-    "top20_compounds_stacked_TSS_FIXED.png",
+    "top20_compounds_stacked_TSS.png",
     dpi=300,
     bbox_inches="tight",
     pad_inches=0.2
 )
 
 fig.savefig(
-    "top20_compounds_stacked_TSS_FIXED.svg",
+    "top20_compounds_stacked_TSS.svg",
     bbox_inches="tight",
     pad_inches=0.2
 )
 
 # ---------- 9) Export the numbers used in the figure ----------
 # Raw means (averaged duplicates) for the top 20:
-top20.to_csv("top20_compounds_raw_means_FIXED.csv")
+top20.to_csv("top20_compounds_raw_means.csv")
 # TSS-normalized values used for plotting:
-tss.to_csv("top20_compounds_TSS_FIXED.csv")
+tss.to_csv("top20_compounds_TSS.csv")
 
-print("Saved: top20_compounds_stacked_TSS_FIXED.png/.svg, top20_compounds_raw_means_FIXED.csv, top20_compounds_TSS_FIXED.csv")
+print("Saved: top20_compounds_stacked_TSS.png/.svg, top20_compounds_raw_means.csv, top20_compounds_TSS.csv")
