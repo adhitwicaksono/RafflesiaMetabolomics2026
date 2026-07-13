@@ -5,24 +5,43 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.colors import TwoSlopeNorm
 
+# Upload file
 BASE_DIR = Path(__file__).resolve().parent
-MATRIX_FILE = BASE_DIR / "corrected_heatmap_matrix_with_status.csv"
+RAW_FILE = BASE_DIR / "rafflesia_dataset5.xlsx"
+SHEET_NAME = "Sheet1"
 
-PNG_OUT = BASE_DIR / "metabolite_heatmap_FINAL.png"
-SVG_OUT = BASE_DIR / "metabolite_heatmap_FINAL.svg"
-CSV_OUT = BASE_DIR / "metabolite_heatmap_matrix_FINAL.csv"
+PNG_OUT = BASE_DIR / "metabolite_heatmap.png"
+SVG_OUT = BASE_DIR / "metabolite_heatmap.svg"
+CSV_OUT = BASE_DIR / "metabolite_heatmap_matrix.csv"
 
-full = pd.read_csv(MATRIX_FILE, index_col=0)
+full = pd.read_excel(RAW_FILE, sheet_name=SHEET_NAME)
 
-# Naringenin could not be reconstructed/verified from the raw feature matrix
-# under any tested compound-matching rule; removed rather than left unverified.
-full = full.drop(index="Naringenin")
+# In dataset5, metabolite names are stored in the last unnamed column
+if "Unnamed: 4" in full.columns:
+    full = full.rename(columns={"Unnamed: 4": "Metabolite"})
 
 value_columns = ["Infected ILO", "Uninfected ILO", "Aerial stem/leaf", "Nonhost ILO"]
+
+required_columns = value_columns + ["Metabolite"]
+missing = [c for c in required_columns if c not in full.columns]
+if missing:
+    raise ValueError(f"Missing required columns: {missing}")
+
+full = full.set_index("Metabolite")
+
+# Naringenin could not be verified from the raw feature matrix
+full = full.drop(index="Naringenin", errors="ignore")
+
 matrix = full[value_columns].copy()
+matrix = matrix.apply(pd.to_numeric, errors="coerce")
+
+if matrix.isna().any().any():
+    bad_rows = matrix[matrix.isna().any(axis=1)]
+    raise ValueError(f"Non-numeric or missing values found:\n{bad_rows}")
+
 matrix.to_csv(CSV_OUT)
 
-# ---------- Plot (same logic as the original script) ----------
+# ---------- Plot ----------
 fig_height = max(8, 0.30 * len(matrix) + 1.6)
 fig, ax = plt.subplots(figsize=(10.5, fig_height))
 
