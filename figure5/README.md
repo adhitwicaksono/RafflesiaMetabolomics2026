@@ -1,7 +1,0 @@
-# Figure 5 - Log₂ Fold Change Bar Chart
-
-<img src="nonhost_vs_infected_log2fc_barchart.png"/>
-
-#
-
-Log₂ fold change in compound abundance between non-host and infected Tetrastigma tissues from two geographic locations (CAM and ILO only, since non-host Tetrastigma spp. were not found and collected in THAI). Bar plots display log₂FC values, with both the raw Welch's t-test p-value and the Benjamini–Hochberg FDR-adjusted q-value annotated for each comparison. Because only 9 compounds are shown out of the full tested feature set, q-values were calculated across the complete family of metabolite features tested per locality (CAM n = 1,394; ILO n = 1,491 deduplicated features), not just the 9 shown, to avoid inflating apparent significance through post-hoc selection. Bars with FDR ≥ 0.05 are hatched. Metabolites were selected for display based on log₂FC magnitude and/or nominal statistical support in at least one locality; most did not remain significant after correction, and the Camarines Norte (CAM) comparisons in particular rest on only two biological replicates per group and should be interpreted as exploratory. Several feature-level comparisons retained FDR support after correction, although enrichment patterns varied by locality and should be interpreted cautiously because some comparisons rely on limited biological replication.

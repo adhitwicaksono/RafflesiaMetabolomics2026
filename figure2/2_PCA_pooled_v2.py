@@ -15,7 +15,7 @@ TARGET_COVERAGE = 0.68
 N_STD = chi2.ppf(TARGET_COVERAGE, df=3) ** 0.5  # ~1.87
 
 # --- 1) Load sheet ---
-file_path = r'..\raw_data\rafflesia_dataset1.xlsx'
+file_path = "rafflesia_dataset1.xlsx"
 df = pd.read_excel(file_path, sheet_name="Sheet1")
 
 # --- 2) Keep only sample-intensity columns ---
@@ -47,7 +47,7 @@ SUPERGROUPS = [
 def to_supergroup(col_name: str) -> str:
     name = col_name.lower()
     # ensure “UNinfected” doesn’t fall into “infected”
-    ordered = ["UNinfectedTHAI", "UNinfectedCAM", "UNinfectedILO"] + \
+    ordered = ["UNinfectedTHAI","UNinfectedCAM","UNinfectedILO"] + \
               [g for g in SUPERGROUPS if not g.startswith("UNinfected")]
     for g in ordered:
         if g.lower() in name:
@@ -89,20 +89,20 @@ ve = pca.explained_variance_ratio_ * 100
 # --- 7) Plot (publication-clean) ---
 # marker/color style similar to your reference
 style = {
-    "sapbud": ("#6baed6", "o"),
-    "Raffbudspec": ("#4292c6", "o"),
-    "Raffbudlag": ("#2171b5", "o"),
-    "infectedTHAI": ("#31a354", "s"),
-    "infectedCAM": ("#74c476", "s"),
-    "infectedILO": ("#006d2c", "s"),
-    "UNinfectedTHAI": ("#fd8d3c", "D"),
-    "UNinfectedCAM": ("#fdae6b", "D"),
-    "UNinfectedILO": ("#fdd0a2", "D"),
-    "uninfecraffspec-stemleaf": ("#9e9ac8", "1"),
-    "nonhostILO": ("#a05a2c", "X"),
-    "NonhostCAM": ("#8c6d31", "X"),
-    "raffseed": ("#252525", "^"),
-    "Ampelopsis": ("#f768a1", "v"),
+    "sapbud": ("#6baed6","o"),
+    "Raffbudspec": ("#4292c6","o"),
+    "Raffbudlag": ("#2171b5","o"),
+    "infectedTHAI": ("#31a354","s"),
+    "infectedCAM": ("#74c476","s"),
+    "infectedILO": ("#006d2c","s"),
+    "UNinfectedTHAI": ("#fd8d3c","D"),
+    "UNinfectedCAM": ("#fdae6b","D"),
+    "UNinfectedILO": ("#fdd0a2","D"),
+    "uninfecraffspec-stemleaf": ("#9e9ac8","1"),
+    "nonhostILO": ("#a05a2c","X"),
+    "NonhostCAM": ("#8c6d31","X"),
+    "raffseed": ("#252525","^"),
+    "Ampelopsis": ("#f768a1","v"),
 }
 
 legend_order = [

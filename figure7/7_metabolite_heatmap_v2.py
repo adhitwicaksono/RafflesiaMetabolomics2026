@@ -7,7 +7,7 @@ from matplotlib.colors import TwoSlopeNorm
 
 # Upload file
 BASE_DIR = Path(__file__).resolve().parent
-RAW_FILE = BASE_DIR.parent / "raw_data" / "rafflesia_dataset5.xlsx"
+RAW_FILE = BASE_DIR / "rafflesia_dataset5.xlsx"
 SHEET_NAME = "Sheet1"
 
 PNG_OUT = BASE_DIR / "metabolite_heatmap.png"

@@ -17,7 +17,7 @@ from matplotlib.lines import Line2D
 
 # ---------- Configuration ----------
 BASE_DIR = Path(__file__).resolve().parent
-INPUT_FILE = BASE_DIR.parent / "raw_data" / "rafflesia_dataset2.xlsx"
+INPUT_FILE = BASE_DIR / "rafflesia_dataset2.xlsx"
 SHEET_NAME = "Sheet1"
 
 MIN_DISPLAY_LOG2FC = -0.5
@@ -51,7 +51,7 @@ def main() -> None:
     if not INPUT_FILE.exists():
         raise FileNotFoundError(
             f"Input file not found: {INPUT_FILE.name}\n"
-            f"Place the Excel file in the directory {BASE_DIR.parent / 'raw_data'}."
+            "Place the Excel file in the same directory as this script."
         )
 
     df = pd.read_excel(INPUT_FILE, sheet_name=SHEET_NAME)
