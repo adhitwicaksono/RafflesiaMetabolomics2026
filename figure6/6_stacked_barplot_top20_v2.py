@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import textwrap
 
 # ---------- 1) Load data ----------
-file_path = "rafflesia_dataset4.xlsx"
+file_path = r'..\raw_data\rafflesia_dataset4.xlsx'
 df = pd.ExcelFile(file_path).parse(0)   # first sheet
 
 # ---------- 2) Keep group-average columns + Feature_Label ----------

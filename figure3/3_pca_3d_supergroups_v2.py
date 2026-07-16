@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D  # noqa
 
 # --- 1) Load data ---
-file_path = "rafflesia_dataset1.xlsx"
+file_path = r'..\raw_data\rafflesia_dataset1.xlsx'
 df = pd.read_excel(file_path, sheet_name="Sheet1")
 
 # --- 2) Feature IDs and sample columns ---

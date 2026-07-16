@@ -7,8 +7,8 @@ import matplotlib.pyplot as plt
 
 # ---------- Configuration ----------
 BASE_DIR = Path(__file__).resolve().parent
-RAW_FILE = BASE_DIR / "rafflesia_dataset1.xlsx"     # full untargeted feature matrix
-TOP_FILE = BASE_DIR / "rafflesia_dataset3.xlsx"     # pre-selected top nonhost-vs-infected compounds
+RAW_FILE = BASE_DIR.parent / "raw_data" / "rafflesia_dataset1.xlsx"   # full untargeted feature matrix
+TOP_FILE = BASE_DIR.parent / "raw_data" / "rafflesia_dataset3.xlsx"     # pre-selected top nonhost-vs-infected compounds
 SHEET_NAME = "Sheet1"
 
 FDR_ALPHA = 0.05
