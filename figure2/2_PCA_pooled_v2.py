@@ -84,6 +84,10 @@ X_scaled = StandardScaler().fit_transform(X)
 # --- 6) PCA ---
 pca = PCA(n_components=3, random_state=0)
 scores = pca.fit_transform(X_scaled)
+
+scores[:, 2] *= -1
+pca.components_[2, :] *= -1
+
 ve = pca.explained_variance_ratio_ * 100
 
 # --- 7) Plot (publication-clean) ---
