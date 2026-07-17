@@ -1,0 +1,12 @@
+#!/bin/bash
+
+find . -type f -name "*.py" | while read -r script; do
+    echo "Running script: $script"
+    
+    script_dir=$(dirname "$script")
+    script_name=$(basename "$script")
+    
+    cd "$script_dir" || continue
+    python "$script_name"
+    cd - > /dev/null || exit
+done
