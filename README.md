@@ -78,6 +78,16 @@ python3 figure1_script_name.py
 
 The script will regenerate the PNG figure and any associated CSV or summary output files.
 
+### Automating script execution
+
+Additionally, you can run every script at once by running the Bash script `run_scripts.bh`.
+To do so:
+
+1. Run your terminal or console in the parent folder (folder where `run_scripts.bh` is located).
+2. (Linux) Run the command `./blast.sh`.
+3. (Mac) Run the command `sh blast.sh`.
+4. (Windows) Install an application to run Unix commands (such as Git Bash) and run the command `bash blast.sh`.
+
 ## Software requirements
 
 The scripts were written for Python 3 and require the following packages:
