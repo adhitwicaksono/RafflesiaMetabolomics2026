@@ -65,9 +65,8 @@ Each figure folder should be run independently.
 
 To regenerate a figure:
 
-1. Copy the required input dataset from `raw_data/` into the corresponding `figureN/` folder, unless it is already present.
-2. Open a terminal in the `figureN/` folder.
-3. Run the relevant Python script.
+1. Open a terminal in the `figureN/` folder.
+2. Run the relevant Python script.
 
 Example:
 
