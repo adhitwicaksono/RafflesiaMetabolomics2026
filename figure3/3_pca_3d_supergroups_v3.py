@@ -6,7 +6,14 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D  # noqa
 
 # --- 1) Load data ---
-file_path = r'..\raw_data\rafflesia_dataset1.xlsx'
+from pathlib import Path
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from pubstyle import apply_style, label as glabel, WIDTH
+apply_style()
+
+file_path = Path(__file__).resolve().parent.parent / 'raw_data' / 'rafflesia_dataset1.xlsx'
 df = pd.read_excel(file_path, sheet_name="Sheet1")
 
 # --- 2) Feature IDs and sample columns ---
@@ -56,7 +63,7 @@ X = df.T  # samples x features
 X = X.apply(pd.to_numeric, errors="coerce").fillna(0.0)
 
 # --- 7) Autoscaling (z-score) ---
-X_scaled = StandardScaler().fit_transform(X)
+X_scaled = StandardScaler().fit_transform(X.to_numpy())
 
 # --- 8) PCA (3 components) ---
 pca = PCA(n_components=3, random_state=0)
@@ -74,7 +81,7 @@ style = {
 }
 order = ["BUD", "INFECTED", "UNINFECTED", "nonhostTET", "UNINFRAFFSPEC", "RAFFSEED"]
 
-fig = plt.figure(figsize=(10, 8))
+fig = plt.figure(figsize=(WIDTH, 4.4))
 ax = fig.add_subplot(111, projection="3d")
 
 scores_df = pd.DataFrame(scores, index=X.index, columns=["PC1", "PC2", "PC3"])
@@ -87,15 +94,15 @@ for g in order:
     color, marker = style[g]
     ax.scatter(
         sub["PC1"], sub["PC2"], sub["PC3"],
-        c=color, marker=marker, s=70,
-        edgecolor="none", alpha=1.0, depthshade=False, label=g
+        c=color, marker=marker, s=22,
+        edgecolor="none", alpha=1.0, depthshade=False, label=glabel(g)
     )
 
 ax.set_xlabel(f"PC1 ({ve[0]:.1f}%)")
 ax.set_ylabel(f"PC2 ({ve[1]:.1f}%)")
 ax.set_zlabel(f"PC3 ({ve[2]:.1f}%)")
 ax.view_init(elev=22, azim=-35)
-ax.legend(title="Supergroup", bbox_to_anchor=(1.02, 1), loc="upper left", frameon=False)
+ax.legend(title="Group", bbox_to_anchor=(1.05, 1), loc="upper left", frameon=False)
 plt.tight_layout()
 
 # --- Export scores and loadings before opening the interactive plot window ---
@@ -107,7 +114,7 @@ pd.DataFrame(pca.components_.T, index=X.columns, columns=["PC1", "PC2", "PC3"]).
 # --- Save figure files ---
 fig_out_png = "PCA_3D_supergroups.png"
 fig_out_svg = "PCA_3D_supergroups.svg"
-fig.savefig(fig_out_png, dpi=300, bbox_inches="tight")
+fig.savefig(fig_out_png, dpi=600, bbox_inches="tight")
 fig.savefig(fig_out_svg, bbox_inches="tight")
 
 print("Saved:", scores_out, loadings_out, fig_out_png, fig_out_svg)

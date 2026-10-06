@@ -1,0 +1,10 @@
+infected vs uninfected (pooled, strata=locality) euc: n={np.str_('inf'): np.int64(13), np.str_('un'): np.int64(14)} F=1.07 R2=0.041 p=0.1789
+infected vs uninfected (pooled, strata=locality) bc: n={np.str_('inf'): np.int64(13), np.str_('un'): np.int64(14)} F=0.92 R2=0.035 p=0.3142
+infected vs uninfected ILO                    euc: n={np.str_('inf'): np.int64(9), np.str_('un'): np.int64(10)} F=1.28 R2=0.070 p=0.1137
+infected vs uninfected ILO                    bc: n={np.str_('inf'): np.int64(9), np.str_('un'): np.int64(10)} F=1.23 R2=0.067 p=0.2539
+non-host vs infected ILO                      euc: n={np.str_('inf'): np.int64(9), np.str_('non'): np.int64(4)} F=1.89 R2=0.146 p=0.0063
+non-host vs infected ILO                      bc: n={np.str_('inf'): np.int64(9), np.str_('non'): np.int64(4)} F=2.76 R2=0.201 p=0.0292
+non-host vs infected CAM                      euc: n={np.str_('inf'): np.int64(2), np.str_('non'): np.int64(2)} F=1.98 R2=0.498 p=0.3321
+non-host vs infected CAM                      bc: n={np.str_('inf'): np.int64(2), np.str_('non'): np.int64(2)} F=7.94 R2=0.799 p=0.3321
+non-host vs infected (CAM+ILO, strata)        euc: n={np.str_('inf'): np.int64(11), np.str_('non'): np.int64(6)} F=1.90 R2=0.112 p=0.0018
+non-host vs infected (CAM+ILO, strata)        bc: n={np.str_('inf'): np.int64(11), np.str_('non'): np.int64(6)} F=2.28 R2=0.132 p=0.0416

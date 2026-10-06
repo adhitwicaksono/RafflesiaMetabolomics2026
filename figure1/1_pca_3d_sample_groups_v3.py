@@ -5,7 +5,14 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D  # noqa
 
 # --- 1) Load sheet ---
-file_path = r'..\raw_data\rafflesia_dataset1.xlsx'
+from pathlib import Path
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from pubstyle import apply_style, label as glabel, WIDTH
+apply_style()
+
+file_path = Path(__file__).resolve().parent.parent / 'raw_data' / 'rafflesia_dataset1.xlsx'
 df = pd.read_excel(file_path, sheet_name="Sheet1")
 
 # --- 2) Keep only sample-intensity columns ---
@@ -56,7 +63,7 @@ X = df.T   # shape: (n_samples, n_features)
 X = X.apply(pd.to_numeric, errors="coerce").fillna(0.0)
 
 # --- 5) Autoscaling (mean-centered, unit variance) ---
-X_scaled = StandardScaler().fit_transform(X)
+X_scaled = StandardScaler().fit_transform(X.to_numpy())
 
 # --- 6) PCA ---
 pca = PCA(n_components=3, random_state=0)
@@ -90,7 +97,7 @@ legend_order = [
     "raffseed", "Ampelopsis"
 ]
 
-fig = plt.figure(figsize=(11, 8))
+fig = plt.figure(figsize=(WIDTH, 4.4))
 ax = fig.add_subplot(111, projection="3d")
 
 for g in legend_order:
@@ -99,7 +106,7 @@ for g in legend_order:
         continue
     col, mk = style[g]
     ax.scatter(scores[idx,0], scores[idx,1], scores[idx,2],
-               s=70, c=col, marker=mk, edgecolor="none", alpha=1.0, depthshade=False, label=g)
+               s=22, c=col, marker=mk, edgecolor="none", alpha=1.0, depthshade=False, label=glabel(g))
 
 ax.set_xlabel(f"PC1 ({ve[0]:.1f}%)")
 ax.set_ylabel(f"PC2 ({ve[1]:.1f}%)")
@@ -110,10 +117,10 @@ ax.grid(True, linestyle="--", alpha=0.4)
 
 # legend in the same order as legend_order
 handles, labels = ax.get_legend_handles_labels()
-ordered = [(h,l) for g in legend_order for h,l in zip(handles, labels) if l == g]
+ordered = [(h,l) for g in legend_order for h,l in zip(handles, labels) if l == glabel(g)]
 if ordered:
     h_ord, l_ord = zip(*ordered)
-    ax.legend(h_ord, l_ord, title="Group", bbox_to_anchor=(1.02, 1), loc="upper left", frameon=False)
+    ax.legend(h_ord, l_ord, title="Group", bbox_to_anchor=(1.05, 1), loc="upper left", frameon=False)
 else:
     ax.legend(title="Group", bbox_to_anchor=(1.02, 1), loc="upper left", frameon=False)
 
@@ -134,7 +141,7 @@ loadings_df.to_csv(loadings_out)
 figure_png = "PCA_3D_sample_groups.png"
 figure_svg = "PCA_3D_sample_groups.svg"
 
-fig.savefig(figure_png, dpi=300, bbox_inches="tight")
+fig.savefig(figure_png, dpi=600, bbox_inches="tight")
 fig.savefig(figure_svg, bbox_inches="tight")
 
 print("Saved:", scores_out, loadings_out, figure_png, figure_svg)

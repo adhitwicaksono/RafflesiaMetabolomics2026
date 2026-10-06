@@ -15,7 +15,14 @@ TARGET_COVERAGE = 0.68
 N_STD = chi2.ppf(TARGET_COVERAGE, df=3) ** 0.5  # ~1.87
 
 # --- 1) Load sheet ---
-file_path = r'..\raw_data\rafflesia_dataset1.xlsx'
+from pathlib import Path
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from pubstyle import apply_style, label as glabel, WIDTH
+apply_style()
+
+file_path = Path(__file__).resolve().parent.parent / 'raw_data' / 'rafflesia_dataset1.xlsx'
 df = pd.read_excel(file_path, sheet_name="Sheet1")
 
 # --- 2) Keep only sample-intensity columns ---
@@ -79,7 +86,7 @@ X = df.T   # shape: (n_samples, n_features)
 X = X.apply(pd.to_numeric, errors="coerce").fillna(0.0)
 
 # --- 5) Autoscaling (mean-centered, unit variance) ---
-X_scaled = StandardScaler().fit_transform(X)
+X_scaled = StandardScaler().fit_transform(X.to_numpy())
 
 # --- 6) PCA ---
 pca = PCA(n_components=3, random_state=0)
@@ -122,7 +129,7 @@ legend_order = [
     "Ampelopsis"
 ]
 
-fig = plt.figure(figsize=(11, 8))
+fig = plt.figure(figsize=(WIDTH, 4.4))
 ax = fig.add_subplot(111, projection="3d")
 
 def plot_group_ellipsoid(
@@ -205,13 +212,13 @@ for g in legend_order:
         scores[idx, 0],
         scores[idx, 1],
         scores[idx, 2],
-        s=70,
+        s=22,
         c=col,
         marker=mk,
         edgecolors="none",
         alpha=1.0,
         depthshade=False,
-        label=g
+        label=glabel(g)
     )
 
 # --- Pooled supergroup ellipsoids ---
@@ -235,18 +242,8 @@ for label, (members, ell_color) in ELLIPSOID_SUPERGROUPS.items():
         alpha=0.15
     )
 
-# uninfecraffspec-stemleaf has no locality split, so it can still get its own
-# ellipsoid if it has enough points; not part of ELLIPSOID_SUPERGROUPS above.
-idx_stem = [i for i, gg in enumerate(groups) if gg == "uninfecraffspec-stemleaf"]
-if idx_stem:
-    col, _ = style["uninfecraffspec-stemleaf"]
-    plot_group_ellipsoid(
-        ax,
-        scores[idx_stem, :3],
-        color=col,
-        n_std=N_STD,
-        alpha=0.15
-        )
+# Ellipsoids are drawn only for the pooled infected and uninfected groups above
+# (no ellipsoid for the 2-sample aerial stem/leaf group).
 
 ax.set_xlabel(f"PC1 ({ve[0]:.1f}%)")
 ax.set_ylabel(f"PC2 ({ve[1]:.1f}%)")
@@ -263,18 +260,18 @@ ax.set_box_aspect(tuple(ranges))
 
 # legend in the same order as legend_order
 handles, labels = ax.get_legend_handles_labels()
-ordered = [(h,l) for g in legend_order for h,l in zip(handles, labels) if l == g]
+ordered = [(h,l) for g in legend_order for h,l in zip(handles, labels) if l == glabel(g)]
 if ordered:
     h_ord, l_ord = zip(*ordered)
-    ax.legend(h_ord, l_ord, title="Group", bbox_to_anchor=(1.02, 1), loc="upper left", frameon=False)
+    ax.legend(h_ord, l_ord, title="Group", bbox_to_anchor=(1.05, 1), loc="upper left", frameon=False)
 else:
     ax.legend(title="Group", bbox_to_anchor=(1.02, 1), loc="upper left", frameon=False)
 
 plt.tight_layout()
 
 # --- 8) Export PCA scores & loadings ---
-scores_out = "PCA_scores_autoscaled_main-data.csv"
-loadings_out = "PCA_loadings_autoscaled_main-data.csv"
+scores_out = "PCA_scores_autoscaled_main-data_68CI_fig1orient.csv"
+loadings_out = "PCA_loadings_autoscaled_main-data_68CI_fig1orient.csv"
 
 scores_df = pd.DataFrame(scores, index=X.index, columns=["PC1", "PC2", "PC3"])
 scores_df["Group"] = groups
@@ -284,10 +281,10 @@ scores_df.to_csv(scores_out)
 loadings_df.to_csv(loadings_out)
 
 # --- 9) Save figure files ---
-figure_png = "PCA_3D_sample_groups.png"
-figure_svg = "PCA_3D_sample_groups.svg"
+figure_png = "PCA_3D_sample_groups_68CI_fig1orient.png"
+figure_svg = "PCA_3D_sample_groups_68CI_fig1orient.svg"
 
-fig.savefig(figure_png, dpi=300, bbox_inches="tight")
+fig.savefig(figure_png, dpi=600, bbox_inches="tight")
 fig.savefig(figure_svg, bbox_inches="tight")
 
 print("Saved:", scores_out, loadings_out, figure_png, figure_svg)

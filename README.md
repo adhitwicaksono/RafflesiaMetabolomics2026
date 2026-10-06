@@ -1,6 +1,6 @@
 # Rafflesiaceae–Tetrastigma LC–MS Figure Reproducibility Package
 
-This archive contains the Python scripts, input datasets, and figure outputs used to regenerate the LC–MS metabolomics figures for the manuscript:
+This repository contains the Python scripts, input datasets, and figure outputs used to regenerate the LC–MS metabolomics figures for the manuscript:
 
 **Untargeted metabolomics reveals host responses and metabolites linked to host compatibility in Rafflesiaceae parasitism**
 
@@ -16,66 +16,62 @@ The package allows readers to inspect the input datasets, rerun the figure-gener
 
 ```text
 .
-├── raw_data/
-│   ├── rafflesia_dataset1.xlsx
-│   ├── rafflesia_dataset2.xlsx
-│   ├── rafflesia_dataset3.xlsx
-│   ├── rafflesia_dataset4.xlsx
-│   └── rafflesia_dataset5.xlsx
-├── figure1/
-├── figure2/
-├── figure3/
-├── figure4/
-├── figure5/
-├── figure6/
-├── figure7/
+├── raw_data/            rafflesia_dataset1.xlsx (main feature matrix = Supplementary Dataset S1; source of all figures)
+│                        Supplementary_Dataset_S2_sample_metadata.xlsx (sample metadata = Supplementary Dataset S2)
+│                        heatmap_metabolites.csv (Fig. 7 metabolite list, selected by pathway relevance)
+├── supplementary_datasets/  Supplementary Dataset S1 (feature matrix = raw_data/rafflesia_dataset1.xlsx),
+│                        Dataset S2 (sample metadata for every run), Table S1 (copy of figure5 output)
+├── figure1/ … figure7/  script, figure output, and CSV outputs for each manuscript figure
+├── supplementary/       Supplementary Figs. S1–S4 (2D PCA projections, scree plots, PCA without Ampelopsis/seeds)
+├── pubstyle.py          shared print style and group labels
+├── common.py            shared raw-data loading, name cleaning, group means
+├── verify_figures.py    independent check of figure CSVs against raw data
+├── statistics/          PERMANOVA on biological-sample means (results in permanova_results.txt)
+├── run_scripts.sh
 ├── LICENSE
 └── README.md
 ```
 
-Each `figureN/` folder contains the script, figure output, and associated CSV or intermediate output files for the corresponding manuscript figure.
+## Figure-to-script map (revision 2)
 
-## Figure-to-dataset map
-
-| Folder | Manuscript figure | Main input data | Notes |
+| Folder | Manuscript item | Script | Main input |
 |---|---|---|---|
-| `figure1/` | Figure 1, all-sample PCA | `rafflesia_dataset1.xlsx` | Uses deduplicated LC–MS feature table |
-| `figure2/` | Figure 2, selected host/non-host PCA | `rafflesia_dataset1.xlsx` | Uses selected sample groups and recalculated PCA |
-| `figure3/` | Figure 3, supergroup PCA | `rafflesia_dataset1.xlsx` | Uses pooled biological supergroups |
-| `figure4/` | Figure 4, infection-enrichment significance scatter | `rafflesia_dataset2.xlsx` | Includes nominal p-values and Benjamini–Hochberg FDR values |
-| `figure5/` | Figure 5, non-host versus infected comparison | `rafflesia_dataset1.xlsx`; `rafflesia_dataset3.xlsx` | Uses deduplicated raw data and locality-specific comparisons |
-| `figure6/` | Figure 6, top-compound stacked bar plot | `rafflesia_dataset4.xlsx` | Uses top-abundance compound summaries |
-| `figure7/` | Figure 7, metabolite heatmap | `rafflesia_dataset5.xlsx` | Heatmap generated directly from dataset 5 after removal of `Naringenin` |
+| `figure1/` | Fig. 1, all-sample 3D PCA | `1_pca_3d_sample_groups_v3.py` | dataset1 |
+| `figure2/` | Fig. 2, host/non-host 3D PCA with pooled 68% ellipsoids | `2_PCA_pooled_v4.py` | dataset1 |
+| `figure3/` | Fig. 3, supergroup 3D PCA | `3_pca_3d_supergroups_v3.py` | dataset1 |
+| `figure4/` | Fig. 4, infected vs apparently uninfected (biological samples) | `4_infection_candidates_scatter_bio.py` (+ `bio_stats.py`) | dataset1 |
+| `figure5/` | Fig. 5 and Table S1, non-host vs infected (biological samples) | `5_nonhost_vs_infected_dotplots_bio.py` (+ `bio_stats.py`) | dataset1 |
+| `figure6/` | Fig. 6, top-20 compound stacked bars | `6_stacked_barplot_top20_v5.py` | dataset1 |
+| `figure7/` | Fig. 7, metabolite heatmap | `7_metabolite_heatmap_v4.py` | dataset1 (+ `heatmap_metabolites.csv`) |
+| `supplementary/` | Figs. S1–S4 | `pca_2d_supplementary.py` | dataset1 |
+| `statistics/` | PERMANOVA (Results 3.2–3.3) | `permanova.py` (+ `bio_stats.py`) | dataset1 |
 
-## Updates from the developmental version
+## Changes in revision 2
 
-| Folder | Manuscript figure | Main changes from developmental version |
-|---|---|---|
-| `figure1/` | Figure 1, all-sample PCA | Removed exact duplicate rows from the feature table and fixed reproducibility settings |
-| `figure2/` | Figure 2, selected host/non-host PCA | Recalculated PCA after selected-group filtering; corrected ellipsoid calculation and rendering; removed unsupported non-host ellipsoid |
-| `figure3/` | Figure 3, supergroup PCA | Removed exact duplicate rows and corrected group assignment logic |
-| `figure4/` | Figure 4, infection-enrichment significance scatter | Added Benjamini–Hochberg FDR values and retained nominal and corrected statistics in the output |
-| `figure5/` | Figure 5, non-host versus infected comparison | Recomputed locality-specific Welch tests from deduplicated data, applied FDR correction, and marked non-FDR-supported bars visually |
-| `figure6/` | Figure 6, top-compound stacked bar plot | Restored 12-hydroxyoctadecanoic acid, a highly abundant seed-associated compound discussed in the manuscript |
-| `figure7/` | Figure 7, metabolite heatmap | Rebuilt the heatmap from `rafflesia_dataset5.xlsx` and removed `Naringenin` because the row could not be verified for the final heatmap |
+- **Biological replication (Figs. 4–5, PERMANOVA):** the two technical LC-MS/MS injections of each sample (adjacent columns, e.g. `infectedILO` / `infectedILO.1`) are averaged per biological sample before testing. Earlier versions tested technical runs as independent observations. Welch's t-tests; log2FC = log2((mean A + 1)/(mean B + 1)); negative intensities set to 0; Benjamini–Hochberg FDR across all testable metabolites/features per contrast (606 name-consolidated metabolites, pooled Fig. 4; 1,369 features CAM and 1,476 features ILO, Fig. 5). No metabolite or feature has q < 0.05.
+- **Fig. 4** is computed directly from dataset1 (the earlier version read precomputed run-level statistics from a separate summary table). All metabolites meeting p < 0.05 and log2FC > 1 at the biological-sample level are labeled.
+- **Fig. 5** is selected by a stated rule: log2FC > 1 (non-host/infected) at both localities and p < 0.05 in at least one, natural-product annotations only. All qualifying features are in `figure5/fig5_rule_based_candidates.csv` (Supplementary Table S1); the nine with the lowest p are plotted as biological-sample dot plots, labeled by retention time.
+- **PERMANOVA:** Euclidean distances on autoscaled log10(x + 1) values, 9,999 permutations, restricted within locality for pooled contrasts; Bray–Curtis as sensitivity check. Non-host vs infected p = 0.002 (R² = 0.11); infected vs apparently uninfected p = 0.18.
+- **Fig. 2:** no ellipsoid is drawn for the two-sample aerial stem/leaf group (it was not visible in the figure).
+- **Figs. 6–7 data correction:** group means are now computed directly from the individual runs in dataset1. The precomputed `aveuninfecraffspec-stemleaf` column (used via dataset4/dataset5 in earlier versions) did not equal the mean of its runs; this affected the stem/leaf bar in Fig. 6 and all Z-scores in Fig. 7. The heatmap metabolite list is in `raw_data/heatmap_metabolites.csv`; the earlier intermediate tables (datasets 2–5) are no longer used and have been removed.
+- **Name consolidation:** annotations differing only in capitalization or a ".mol" suffix (e.g., "EPICATECHIN"/"Epicatechin", "CITRIC ACID"/"Citric acid") are merged in all name-consolidated analyses (Figs. 4, 6, 7); the pooled Fig. 4 family is 606 metabolites.
+- **Verification:** `run_scripts.sh` ends by running `verify_figures.py`, which recomputes Figs. 4–7 values independently from dataset1 and checks that every metabolite meeting the Fig. 4 thresholds is labelled.
+- **Fig. 6** ranks the 20 most abundant compounds across all annotated features in dataset1 (summed group means), excluding non-natural or unresolved annotations (`common.is_natural`); earlier versions ranked only a hand-curated subset (former dataset4) that omitted abundant natural products such as isovitexin and L-malic acid.
+- **Fig. 7:** exported at 600 dpi.
+- **Supplementary Figs. S1–S4:** PC1–PC3 and PC2–PC3 projections and scree plots for Figs. 1–3, and Fig. 1 recomputed without Ampelopsis and R. speciosa seeds.
+- All figures are drawn at final print width (174 mm) with 6.5–8 pt lettering and plain-language group labels, using the shared `pubstyle.py`; PNGs are exported at 600 dpi.
+- All scripts read data from `../raw_data/` using platform-independent paths.
 
 ## Regenerating figures
 
-Each figure folder should be run independently.
-
-To regenerate a figure:
-
-1. Open a terminal in the `figureN/` folder.
-2. Run the relevant Python script.
-
-Example:
+Run each script from inside its own folder, e.g.
 
 ```bash
-cd figure1
-python3 figure1_script_name.py
+cd figure4
+python3 4_infection_candidates_scatter_bio.py
 ```
 
-The script will regenerate the PNG figure and any associated CSV or summary output files.
+or run every script with `run_scripts.sh` from the repository root (Linux: `./run_scripts.sh`; Mac: `sh run_scripts.sh`; Windows: `bash run_scripts.sh` in Git Bash).
 
 ### Automating script execution
 
@@ -99,30 +95,37 @@ scikit-learn
 openpyxl
 ```
 
-Some scripts may also require:
-
-```text
-scipy
-statsmodels
-```
-
-A minimal installation command is:
+and `scipy`. A minimal installation command is:
 
 ```bash
-pip install pandas numpy matplotlib scikit-learn openpyxl scipy statsmodels
+pip install pandas numpy matplotlib scikit-learn openpyxl scipy
 ```
+
+## Supplementary datasets
+
+- **Dataset S1** (`raw_data/rafflesia_dataset1.xlsx`): the full feature matrix (1,540 rows; 114 sample runs and 4 procedural blanks). Technical duplicate injections are adjacent columns (e.g., `infectedILO`, `infectedILO.1`).
+- **Dataset S2** (`raw_data/Supplementary_Dataset_S2_sample_metadata.xlsx`): one row per run in Dataset S1, with biological sample ID, technical replicate, group, locality, tissue, species, infection status, and collection date. *Tetrastigma* species are difficult to identify without leaves or reproductive structures; where several species are listed for a group, the species of individual samples could not be confirmed.
+- **Table S1** (`figure5/Table_S1_nonhost_vs_infected.xlsx`): generated by the Fig. 5 script.
+
+## Supplementary datasets
+
+- **Dataset S1** (`supplementary_datasets/Supplementary_Dataset_S1_feature_matrix.xlsx`) is identical to `raw_data/rafflesia_dataset1.xlsx`.
+- **Dataset S2** (`supplementary_datasets/Supplementary_Dataset_S2_sample_metadata.xlsx`) describes every run column in Dataset S1: biological sample ID, technical replicate, group, locality, tissue, species, infection status, and collection date. Technical replicates are adjacent columns in Dataset S1. *Tetrastigma* species are difficult to identify without leaves or reproductive structures; where several species are listed for a group, the exact species of individual samples could not be confirmed.
+- **Table S1** is generated by `figure5/5_nonhost_vs_infected_dotplots_bio.py`; the copy in `supplementary_datasets/` is for convenience.
+
+## Note on rafflesia_dataset1.xlsx
+
+The raw matrix includes precomputed group-average columns (`ave…`). These are ignored by every script; all means are computed from the individual runs. The `aveuninfecraffspec-stemleaf` column does not equal the mean of its four runs and should not be used.
 
 ## Statistical notes
 
-The PCA figures use autoscaled metabolite-feature matrices. In Figures 1–3, duplicate feature rows were removed before PCA. Because PCA variance percentages depend on the exact input matrix and sample set, the percentages reported in each figure correspond to the specific dataset and filtering rules used for that figure.
+PCA (Figs. 1–3, S1–S4) uses autoscaled feature matrices and plots individual technical runs for analytical reproducibility; points are not independent biological replicates. All hypothesis tests (Figs. 4–5, PERMANOVA) use biological-sample means. Nominal p-values and FDR-adjusted q-values should be interpreted separately; highlighted metabolites are exploratory candidates, not confirmed markers. CAM comparisons rest on two biological samples per group.
 
-Figures 4 and 5 include Benjamini–Hochberg FDR correction to account for multiple testing. Nominal p-values and FDR-adjusted values should be interpreted separately. Metabolites or features that do not survive FDR correction should be treated as exploratory candidates rather than confirmed statistically significant markers.
-
-For Figure 5, locality-specific comparisons are shown for selected metabolites. Some comparisons rely on limited biological replication and should therefore be interpreted as exploratory feature-level patterns requiring further validation.
+Statistical tests are run on all annotated features. Annotations judged unlikely to be natural products were excluded only from figure labels and interpretation (screening with ChatGPT followed by manual author review).
 
 ## Figure 7 heatmap note
 
-The Figure 7 heatmap is generated directly from `rafflesia_dataset5.xlsx`. The compound `Naringenin` is removed within the script because it could not be verified for the final heatmap. The script exports the final 33-row heatmap matrix as:
+The Figure 7 heatmap is computed from `rafflesia_dataset1.xlsx` for the 33 metabolites listed in `raw_data/heatmap_metabolites.csv` (Naringenin, which could not be verified in the raw matrix, is excluded). The script exports the final 33-row heatmap matrix as:
 
 ```text
 metabolite_heatmap_matrix.csv
@@ -136,6 +139,6 @@ Molina, J., Abzalimov, R., Yin, P., Wicaksono, A., Bürger, M., Hill, J., Bernie
 
 ## AI assistance disclosure
 
-Generative AI tools, including ChatGPT and Claude, were used during different stages of this work to assist with Python code drafting, code checking, figure review, and manuscript consistency review. Early script development used ChatGPT GPT-5.2, while later code review, figure checking, and manuscript consistency checks used ChatGPT GPT-5.5 and Claude Sonnet 5.
+Generative AI tools, including ChatGPT and Claude, were used during different stages of this work to assist with Python code drafting, code checking, natural-product screening of annotations for display, figure review, and manuscript consistency review. Early script development used ChatGPT GPT-5.2, while later code review, figure checking, and manuscript consistency checks used ChatGPT GPT-5.5 and Claude Sonnet 5.
 
 All scripts, statistical outputs, figure files, biological interpretations, and manuscript conclusions were reviewed and approved by the authors. The authors retain responsibility for the analyses, interpretations, and final reported conclusions.
