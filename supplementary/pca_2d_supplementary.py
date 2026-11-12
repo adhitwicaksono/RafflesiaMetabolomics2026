@@ -37,7 +37,7 @@ SUPER = {"BUD":["sapbud","Raffbudlag","Raffbudspec"],"INFECTED":["infectedTHAI",
 def run_pca(exclude=(), keep=None, n=10):
     cols = [c for c, g in col2g.items() if g not in exclude and (keep is None or g in keep)]
     X = raw[cols].T.apply(pd.to_numeric, errors="coerce").fillna(0.0)
-    p = PCA(n_components=n, random_state=0); S = p.fit_transform(StandardScaler().fit_transform(X.to_numpy()))
+    p = PCA(n_components=n, random_state=0); S = p.fit_transform(StandardScaler().fit_transform(X))
     return S, np.array([col2g[c] for c in cols]), p.explained_variance_ratio_ * 100
 
 def ellipse(ax, P, color, cov=0.68):
@@ -93,7 +93,7 @@ for key, d in sets.items():
 cols = [c for c, g in col2g.items() if any(g in m for m in SUPER.values())]
 lab = np.array([next(k for k, m in SUPER.items() if col2g[c] in m) for c in cols])
 X = raw[cols].T.apply(pd.to_numeric, errors="coerce").fillna(0.0)
-p = PCA(n_components=10, random_state=0); S = p.fit_transform(StandardScaler().fit_transform(X.to_numpy())); ve = p.explained_variance_ratio_ * 100
+p = PCA(n_components=10, random_state=0); S = p.fit_transform(StandardScaler().fit_transform(X)); ve = p.explained_variance_ratio_ * 100
 summary["3"] = ve[:3]; o3 = ["BUD","INFECTED","UNINFECTED","nonhostTET","UNINFRAFFSPEC","RAFFSEED"]
 fig, axs = plt.subplots(2, 2, figsize=(WIDTH, 5.8)); axs = axs.ravel(); scatter(axs[0], S, lab, o3, 0, 2, ve, legend=False); scatter(axs[1], S, lab, o3, 1, 2, ve, legend=False); scree(axs[2], ve)
 h, l = axs[0].get_legend_handles_labels(); axs[3].axis("off"); axs[3].legend(h, l, title="Group", loc="center", frameon=False); fig.tight_layout()

@@ -63,7 +63,7 @@ X = df.T   # shape: (n_samples, n_features)
 X = X.apply(pd.to_numeric, errors="coerce").fillna(0.0)
 
 # --- 5) Autoscaling (mean-centered, unit variance) ---
-X_scaled = StandardScaler().fit_transform(X.to_numpy())
+X_scaled = StandardScaler().fit_transform(X)
 
 # --- 6) PCA ---
 pca = PCA(n_components=3, random_state=0)
@@ -110,25 +110,21 @@ for g in legend_order:
 
 ax.set_xlabel(f"PC1 ({ve[0]:.1f}%)")
 ax.set_ylabel(f"PC2 ({ve[1]:.1f}%)")
-ax.set_zlabel(f"PC3 ({ve[2]:.1f}%)", labelpad=6)
+ax.set_zlabel(f"PC3 ({ve[2]:.1f}%)")
 # rotate to a reference-like view (tweak as you wish)
 ax.view_init(elev=22, azim=-35)
 ax.grid(True, linestyle="--", alpha=0.4)
 
 # legend in the same order as legend_order
-LEGEND_ANCHOR = 1.20
-
 handles, labels = ax.get_legend_handles_labels()
 ordered = [(h,l) for g in legend_order for h,l in zip(handles, labels) if l == glabel(g)]
 if ordered:
     h_ord, l_ord = zip(*ordered)
-    ax.legend(h_ord, l_ord, title="Group", bbox_to_anchor=(LEGEND_ANCHOR, 1),
-              loc="upper left", frameon=False, borderaxespad=0)
+    ax.legend(h_ord, l_ord, title="Group", bbox_to_anchor=(1.05, 1), loc="upper left", frameon=False)
 else:
-    ax.legend(title="Group", bbox_to_anchor=(LEGEND_ANCHOR, 1),
-              loc="upper left", frameon=False, borderaxespad=0)
+    ax.legend(title="Group", bbox_to_anchor=(1.02, 1), loc="upper left", frameon=False)
 
-fig.subplots_adjust(left=0.0, right=0.68)
+plt.tight_layout()
 
 # --- 8) Export PCA scores & loadings ---
 scores_out = "PCA_scores_autoscaled_main-data.csv"

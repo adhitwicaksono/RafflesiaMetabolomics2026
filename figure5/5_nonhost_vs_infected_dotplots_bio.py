@@ -71,7 +71,7 @@ info = raw[["Feature_Label", "m/z", "Ions"]].drop_duplicates("Feature_Label")
 t1 = cand.merge(info, on="Feature_Label", how="left")
 shown = set(tab.Feature_Label)
 wb = Workbook(); ws = wb.active; ws.title = "Table S1"
-ws["A1"] = ("Table S1. Features with higher mean abundance in non-host than infected Tetrastigma roots at both localities "
+ws["A1"] = ("Table S1. Features with higher mean abundance in non-host than infected Tetrastigma tissues at both localities "
             "(log2FC > 1 in CAM and ILO) and p < 0.05 in at least one locality (Welch's t-test on biological-sample means; "
             "CAM n = 2 vs 2, ILO n = 4 vs 9). q, Benjamini-Hochberg FDR across all features tested per locality "
             f"({int(out.CAM_p.notna().sum()):,} CAM; {int(out.ILO_p.notna().sum()):,} ILO). Annotations are putative (MSI level 2-3). "

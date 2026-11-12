@@ -63,7 +63,7 @@ X = df.T  # samples x features
 X = X.apply(pd.to_numeric, errors="coerce").fillna(0.0)
 
 # --- 7) Autoscaling (z-score) ---
-X_scaled = StandardScaler().fit_transform(X.to_numpy())
+X_scaled = StandardScaler().fit_transform(X)
 
 # --- 8) PCA (3 components) ---
 pca = PCA(n_components=3, random_state=0)

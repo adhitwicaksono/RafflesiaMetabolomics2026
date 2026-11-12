@@ -1,0 +1,28 @@
+features 1518; with blank signal 1012; ratio<3 77; no blank signal 506
+PCA all samples [ratio>=3]: PC1-3 = [10.   9.4  8. ] (sum 27.4); Procrustes m2 vs full = 0.000
+PCA all samples [no blank signal]: PC1-3 = [9.6 8.3 7.4] (sum 25.3); Procrustes m2 vs full = 0.066
+PERMANOVA [all] infected vs uninfected (pooled, strata) euc: F=1.07 R2=0.041 p=0.1789
+PERMANOVA [all] infected vs uninfected (pooled, strata) bc: F=0.92 R2=0.035 p=0.3142
+PERMANOVA [all] non-host vs infected (CAM+ILO, strata) euc: F=1.90 R2=0.112 p=0.0018
+PERMANOVA [all] non-host vs infected (CAM+ILO, strata) bc: F=2.28 R2=0.132 p=0.0416
+PERMANOVA [all] non-host vs infected ILO euc: F=1.89 R2=0.146 p=0.0063
+PERMANOVA [all] non-host vs infected ILO bc: F=2.76 R2=0.201 p=0.0292
+PERMANOVA [ratio>=3] infected vs uninfected (pooled, strata) euc: F=1.08 R2=0.041 p=0.1716
+PERMANOVA [ratio>=3] infected vs uninfected (pooled, strata) bc: F=0.92 R2=0.036 p=0.3135
+PERMANOVA [ratio>=3] non-host vs infected (CAM+ILO, strata) euc: F=1.96 R2=0.115 p=0.0018
+PERMANOVA [ratio>=3] non-host vs infected (CAM+ILO, strata) bc: F=2.28 R2=0.132 p=0.0427
+PERMANOVA [ratio>=3] non-host vs infected ILO euc: F=1.94 R2=0.150 p=0.0063
+PERMANOVA [ratio>=3] non-host vs infected ILO bc: F=2.76 R2=0.200 p=0.0292
+PERMANOVA [no blank signal] infected vs uninfected (pooled, strata) euc: F=1.11 R2=0.042 p=0.1390
+PERMANOVA [no blank signal] infected vs uninfected (pooled, strata) bc: F=0.82 R2=0.032 p=0.4264
+PERMANOVA [no blank signal] non-host vs infected (CAM+ILO, strata) euc: F=2.22 R2=0.129 p=0.0005
+PERMANOVA [no blank signal] non-host vs infected (CAM+ILO, strata) bc: F=2.22 R2=0.129 p=0.0354
+PERMANOVA [no blank signal] non-host vs infected ILO euc: F=2.12 R2=0.162 p=0.0016
+PERMANOVA [no blank signal] non-host vs infected ILO bc: F=2.41 R2=0.179 p=0.0467
+Fig. 4 candidate Nb-trans-Feruloylserotonin glucoside: min sample/blank ratio 183
+Fig. 4 candidate Phloroacetophenone 6'-[xylosyl-(1->6)-glucoside]: min sample/blank ratio 252
+Fig. 4 candidate Gibberellin A39: min sample/blank ratio inf
+Fig. 4 candidate 3,5-Digalloylepicatechin: min sample/blank ratio 726
+Table S1: 26 features; min sample/blank ratio 3.6
+duplicate injections, total intensity difference: median 1.9%, 90th pct 5.7%
+Ampelopsis mean distance to hosts vs non-hosts: Euclidean 61.6 vs 61.5; Bray-Curtis 0.81 vs 0.78

@@ -86,7 +86,7 @@ X = df.T   # shape: (n_samples, n_features)
 X = X.apply(pd.to_numeric, errors="coerce").fillna(0.0)
 
 # --- 5) Autoscaling (mean-centered, unit variance) ---
-X_scaled = StandardScaler().fit_transform(X.to_numpy())
+X_scaled = StandardScaler().fit_transform(X)
 
 # --- 6) PCA ---
 pca = PCA(n_components=3, random_state=0)

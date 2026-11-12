@@ -26,8 +26,8 @@ The package allows readers to inspect the input datasets, rerun the figure-gener
 ├── pubstyle.py          shared print style and group labels
 ├── common.py            shared raw-data loading, name cleaning, group means
 ├── verify_figures.py    independent check of figure CSVs against raw data
-├── statistics/          PERMANOVA on biological-sample means (results in permanova_results.txt)
-├── run_scripts.sh
+├── statistics/          PERMANOVA on biological-sample means (permanova_results.txt) and blank-filter sensitivity analysis (blank_sensitivity_results.txt)
+├── run_scripts.bh
 ├── LICENSE
 └── README.md
 ```
@@ -44,7 +44,7 @@ The package allows readers to inspect the input datasets, rerun the figure-gener
 | `figure6/` | Fig. 6, top-20 compound stacked bars | `6_stacked_barplot_top20_v5.py` | dataset1 |
 | `figure7/` | Fig. 7, metabolite heatmap | `7_metabolite_heatmap_v4.py` | dataset1 (+ `heatmap_metabolites.csv`) |
 | `supplementary/` | Figs. S1–S4 | `pca_2d_supplementary.py` | dataset1 |
-| `statistics/` | PERMANOVA (Results 3.2–3.3) | `permanova.py` (+ `bio_stats.py`) | dataset1 |
+| `statistics/` | PERMANOVA (Results 3.2–3.3); blank-filter sensitivity (Methods 2.3, Results 3.1) | `permanova.py`, `blank_sensitivity.py` (+ `bio_stats.py`) | dataset1 |
 
 ## Changes in revision 2
 
@@ -55,7 +55,7 @@ The package allows readers to inspect the input datasets, rerun the figure-gener
 - **Fig. 2:** no ellipsoid is drawn for the two-sample aerial stem/leaf group (it was not visible in the figure).
 - **Figs. 6–7 data correction:** group means are now computed directly from the individual runs in dataset1. The precomputed `aveuninfecraffspec-stemleaf` column (used via dataset4/dataset5 in earlier versions) did not equal the mean of its runs; this affected the stem/leaf bar in Fig. 6 and all Z-scores in Fig. 7. The heatmap metabolite list is in `raw_data/heatmap_metabolites.csv`; the earlier intermediate tables (datasets 2–5) are no longer used and have been removed.
 - **Name consolidation:** annotations differing only in capitalization or a ".mol" suffix (e.g., "EPICATECHIN"/"Epicatechin", "CITRIC ACID"/"Citric acid") are merged in all name-consolidated analyses (Figs. 4, 6, 7); the pooled Fig. 4 family is 606 metabolites.
-- **Verification:** `run_scripts.sh` ends by running `verify_figures.py`, which recomputes Figs. 4–7 values independently from dataset1 and checks that every metabolite meeting the Fig. 4 thresholds is labelled.
+- **Verification:** `run_scripts.bh` ends by running `verify_figures.py`, which recomputes Figs. 4–7 values independently from dataset1 and checks that every metabolite meeting the Fig. 4 thresholds is labelled.
 - **Fig. 6** ranks the 20 most abundant compounds across all annotated features in dataset1 (summed group means), excluding non-natural or unresolved annotations (`common.is_natural`); earlier versions ranked only a hand-curated subset (former dataset4) that omitted abundant natural products such as isovitexin and L-malic acid.
 - **Fig. 7:** exported at 600 dpi.
 - **Supplementary Figs. S1–S4:** PC1–PC3 and PC2–PC3 projections and scree plots for Figs. 1–3, and Fig. 1 recomputed without Ampelopsis and R. speciosa seeds.
@@ -71,17 +71,7 @@ cd figure4
 python3 4_infection_candidates_scatter_bio.py
 ```
 
-or run every script with `run_scripts.sh` from the repository root (Linux: `./run_scripts.sh`; Mac: `sh run_scripts.sh`; Windows: `bash run_scripts.sh` in Git Bash).
-
-### Automating script execution
-
-Additionally, you can run every script at once by running the Bash script `run_scripts.bh`.
-To do so:
-
-1. Run your terminal or console in the parent folder (folder where `run_scripts.bh` is located).
-2. (Linux) Run the command `./run_scripts.bh`.
-3. (Mac) Run the command `sh run_scripts.bh`.
-4. (Windows) Install an application to run Unix commands (such as Git Bash) and run the command `bash run_scripts.bh`.
+or run every script with `run_scripts.bh` from the repository root (Linux: `./run_scripts.bh`; Mac: `sh run_scripts.bh`; Windows: `bash run_scripts.bh` in Git Bash).
 
 ## Software requirements
 
@@ -103,7 +93,7 @@ pip install pandas numpy matplotlib scikit-learn openpyxl scipy
 
 ## Supplementary datasets
 
-- **Dataset S1** (`raw_data/rafflesia_dataset1.xlsx`): the full feature matrix (1,540 rows; 114 sample runs and 4 procedural blanks). Technical duplicate injections are adjacent columns (e.g., `infectedILO`, `infectedILO.1`).
+- **Dataset S1** (`raw_data/rafflesia_dataset1.xlsx`): the full feature matrix (1,540 rows, of which 22 are exact duplicates removed before analysis, leaving 1,518 features; 114 sample runs and 4 procedural blanks; intensities are blank-subtracted, i.e., the per-feature mean of the 4 blanks was subtracted from every run). Technical duplicate injections are adjacent columns (e.g., `infectedILO`, `infectedILO.1`).
 - **Dataset S2** (`raw_data/Supplementary_Dataset_S2_sample_metadata.xlsx`): one row per run in Dataset S1, with biological sample ID, technical replicate, group, locality, tissue, species, infection status, and collection date. *Tetrastigma* species are difficult to identify without leaves or reproductive structures; where several species are listed for a group, the species of individual samples could not be confirmed.
 - **Table S1** (`figure5/Table_S1_nonhost_vs_infected.xlsx`): generated by the Fig. 5 script.
 
